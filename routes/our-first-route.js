@@ -16,8 +16,15 @@ async function routes (fastify, options, done){
     })
 
     fastify.get('/:isbn',getOpts, async (request,reply) => {
-      const get_data = await collection.findOne({ isbn :parseInt(request.params.isbn)});
-      return get_data;
+      const isbn = request.params.isbn;
+      const get_data = await collection.findOne({ isbn :parseInt(isbn)});
+      if (get_data != null){
+        return get_data;
+      }
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = `data with isbn ${isbn} doesnt exist`
+      return err
     })
 
     fastify.post('/', postOpts, async (request, reply) => {
