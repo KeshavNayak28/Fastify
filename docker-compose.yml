@@ -1,0 +1,44 @@
+# version: '3'
+
+# services:
+#   fastifypract:
+#     image: fastifypract
+#     build:
+#       context: .
+#       dockerfile: ./Dockerfile
+#     environment:
+#       NODE_ENV: development
+#     ports:
+#       - 3000:3000
+#       # - 9229:9229
+#     volumes:
+#       - .:/usr/src/app
+#     # command: ["node", "--inspect=0.0.0.0:9229", "server.js"]
+#   mongodb:
+#     image: mongo:latest
+#     ports:
+#       - 27017: 27017
+#     volumes:
+#       - data:/data/db
+      
+# volumes: 
+#   data:
+  
+version: "2"
+services:
+  fastifypract:
+      container_name: fastify
+      image: fastify
+      restart: always
+      build: .
+      ports:
+        - "3000:3000"
+      links:
+        - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+       - ./data:/data/db
+    ports:
+       - '27017:27017'
